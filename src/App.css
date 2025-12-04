@@ -1,0 +1,70 @@
+:root {
+  --bg-dark: #1C1C1C;       /* fő háttér */
+  --card-bg: #2C2C2C;       /* film kártya */
+  --accent-red: #E50914;    /* gombok, kiemelések */
+  --text-light: #F5F5F5;    /* fő szöveg */
+  --badge-yellow: #FFB400;  /* rating, badge-ek */
+}
+
+html,body{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  
+  background: linear-gradient(
+    135deg,
+    #0a0012 0%,
+    #10001d 25%,
+    #1b0030 50%,
+    #250043 75%,
+    #3d005f 100%
+    );
+  
+}
+
+
+
+
+
+.navbar {
+ 
+  background-color: #1c1c1c; 
+  padding: 12px 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+
+nav {
+  display: flex;
+  justify-content: center; 
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-link.active{
+  background-color: #ff4c4c;
+  color: white;
+}
+
+.nav-link:hover {
+  background-color: #ff4757; 
+  color: #fff;
+  transform: scale(1.05);
+}
+
+
+

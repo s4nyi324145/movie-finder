@@ -1,0 +1,168 @@
+
+.hero {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    color: #fff;
+    padding: 4rem 2rem;
+    position: relative;
+   
+}
+
+
+
+.hero img {
+    width: 250px;
+    height: 250px;
+    background-color: #1f0037;
+    border: 2px solid white;
+    border-radius: 50%;
+    padding: 1rem;
+    box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+    transition: transform 0.3s ease;
+}
+
+.hero img:hover {
+    transform: scale(1.05);
+}
+
+.hero-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+    width: 700px;
+}
+
+.hero-title h1 {
+    margin: 0;
+    font-size: 3rem;
+
+}
+
+
+
+.hero-title h3 {
+    margin: 0;
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: #ccc;
+}
+
+.hero-title div {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.hero-title input {
+    flex: 1;
+    border-radius: 50px;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    outline: none;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+.hero-title input::placeholder {
+    color: #ddd;
+}
+
+.hero-title input:focus {
+    border-color: #ff4c4c;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.hero-title button {
+    border-radius: 50px;
+    background: #ff4c4c;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.2rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s, transform 0.2s;
+}
+
+
+
+.hero-title button:hover::after {
+    content: "Search";
+    transform: scale(1.05);
+}
+
+.hero-text {
+    display: inline-block;
+    position: relative;
+    white-space: nowrap;
+    margin-left: 0.5rem;
+   
+    }
+    
+.word {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        vertical-align: bottom;
+        border-right: 2px solid white;
+        opacity: 0;
+        color: #ff4c4c;
+        
+}
+    
+.word1 {
+        animation: typing 8s steps(10) infinite;     
+}
+    
+.word2 {
+    animation: typing2 8s steps(10) infinite;
+    animation-delay: 4s; 
+}
+    
+    @keyframes typing {
+    0%, 10% { width: 0ch; opacity: 1; }       
+    25%, 35% { width: 6ch; opacity: 1; }   
+    50%, 55% { width: 0ch; opacity: 0; }    
+    100% { opacity: 0; width: 0ch; }          
+    }
+    @keyframes typing2 {
+        0%, 10% { width: 0ch; opacity: 1; }       
+        25%, 35% { width: 5ch; opacity: 1; }   
+        50%, 55% { width: 0ch; opacity: 0; }    
+        100% { opacity: 0; width: 0ch; }          
+        }
+    
+
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        padding: 2rem 1rem;
+    }
+
+    .hero img {
+        margin-bottom: 2rem;
+    }
+
+    .hero-title h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-title h3 {
+        font-size: 1rem;
+    }
+
+    .hero-title div {
+        flex-direction: column;
+    }
+
+    .hero-title button {
+        width: 100%;
+    }
+}
