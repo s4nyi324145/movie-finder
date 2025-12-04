@@ -54,12 +54,12 @@ function SeasonsPage() {
       <div className="seasons">
         {episodes.map(season => (
         <div key={season.season} className="season-block">
-          <h2>Season {season.season}</h2>
+          <h2>S{season.season}</h2>
 
           <div className="episode-list">
             {season.episodes.map(ep => (
             
-                <div key={ep.id}  data-ep-name={`${ep.name}\nSeason: ${ep.season_number}  Episode: ${ep.episode_number}`} className={`episode-card ${ep.vote_average >= 9 ? 'Awesome' : ep.vote_average >= 8 ? 'Great' : ep.vote_average >= 7 ? 'Good' :  ep.vote_average >= 6 ? 'Regular' : ep.vote_average >= 4 ? 'Bad' : ep.vote_average >= 6 ? 'Regular' : ep.vote_average >= 0 ? 'Unknown' : 'Terrible'}`}>
+                <div key={ep.id}  data-ep-name={`${ep.name}\nSeason: ${ep.season_number}  Episode: ${ep.episode_number}`} className={`episode-card ${ep.vote_average >= 9 ? 'Awesome' : ep.vote_average >= 8 ? 'Great' : ep.vote_average >= 7 ? 'Good' :  ep.vote_average >= 5 ? 'Regular' : ep.vote_average >= 4 ? 'Bad'  : ep.vote_average == 0 ? 'Unknown' : 'Terrible'}`}>
                
                 <p>{ep.vote_average.toFixed(1) > 0 ? ep.vote_average.toFixed(1) : '?'}</p>
                 
