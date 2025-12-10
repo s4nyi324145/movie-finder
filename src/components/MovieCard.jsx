@@ -7,12 +7,7 @@ import errorImg from '../assets/404-error.png'
 
 export default function MovieCard({ movies, onMovieClick }) {
 
-   
-
     return (
-
-   
-
       <>
         {movies.length > 0 ? <div className="movie-cards">
         {movies.map(movie => 
@@ -20,8 +15,7 @@ export default function MovieCard({ movies, onMovieClick }) {
 
            
             <div className="card-img">
-              <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}  alt={movie.title} />
-              
+            <img src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "https://via.placeholder.com/500x750?text=No+Image"} alt={movie.title} />              
             </div>
             <div className="overlay">{movie.overview}</div>
             <div className="card-content">

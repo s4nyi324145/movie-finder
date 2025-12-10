@@ -5,7 +5,7 @@ import { faSearch, faStar, faHeart, faFilm, faUser } from '@fortawesome/free-sol
 import { use, useEffect, useState } from 'react';
 import { useNavigate, NavLink, } from 'react-router-dom';
 
-export default function Hero({searchTerm, setsearchTerm}) {
+export default function Hero({searchTerm, setSearchTerm}) {
 
     const [token,setToken] = useState(null)
     const [userName,setUserName] = useState("Guest")
@@ -51,7 +51,7 @@ export default function Hero({searchTerm, setsearchTerm}) {
                     <div className="hero-search">
                         <input
                             value={searchTerm}
-                            onChange={(e) => setsearchTerm(e.target.value)}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder='Search from thousands of movies'
                             type="text"
                         />
