@@ -27,44 +27,100 @@ html,body{
 
 
 .navbar {
- 
   background-color: #1c1c1c; 
-  padding: 12px 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  padding: 0.75rem 1.25rem;
+  box-shadow: 0 0.125rem 0.375rem rgba(0,0,0,0.5);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
-
 nav {
   display: flex;
-  justify-content: center; 
-  gap: 30px;
+  justify-content: space-between; /* balra a linkek, jobbra auth */
+  align-items: center;
   flex-wrap: wrap;
 }
 
+.nav-left, .auth-section {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
 
 .nav-link {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
-  font-size: 16px;
-  padding: 6px 12px;
-  border-radius: 6px;
+  font-size: 1rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.5rem;
   transition: all 0.2s ease-in-out;
 }
 
 .nav-link.active{
   background-color: #ff4c4c;
-  color: white;
+  color: #fff;
 }
 
 .nav-link:hover {
-  background-color: #ff4757; 
+  background-color: #ff4757;
   color: #fff;
   transform: scale(1.05);
 }
 
+.auth-section .login-btn,
+.auth-section .register-btn,
+.user-btn {
+  background-color: #4da3ff;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.auth-section .login-btn:hover,
+.auth-section .register-btn:hover,
+.user-btn:hover {
+  background-color: #2a82d8;
+}
 
 
+.user-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 2.5rem;
+  right: 0;
+  background-color: #2a2a2c;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.3);
+}
+
+.dropdown-menu button {
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.9rem;
+  transition: 0.2s;
+}
+
+.dropdown-menu button:hover {
+  background-color: #ff4757;
+}
+
+.my-comment-user{
+  color: #ff4757;
+}

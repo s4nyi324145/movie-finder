@@ -51,13 +51,7 @@ export default function SeriesPage() {
 
     return(<>
             <Hero searchTerm={searchTerm} setsearchTerm={setsearchTerm}/>
-            <div className="navbar">
-                <nav>
-                    <NavLink to="/" className='nav-link'>Movies</NavLink>
-                    <NavLink to="/series" className='nav-link'>Series</NavLink>
-                    <NavLink to="/favorites" className='nav-link'>Favorites</NavLink>
-                </nav>
-            </div>
+
             <SeriesCard series={series} onMovieClick={setSelectedSeries}/>
             {selectedSeries && 
                     <SeriesDeatil seriesId={selectedSeries} onClose={() => setSelectedSeries(null)} favorites={favoritesSeries} setFavorites={setFavoritesSeries}/>

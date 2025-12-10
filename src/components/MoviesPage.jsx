@@ -41,13 +41,7 @@ export default function MoviesPage() {
     return (
       <>
         <Hero searchTerm={searchTerm} setsearchTerm={setSearchTerm} />
-        <div className="navbar">
-          <nav>
-            <NavLink to="/" className='nav-link'>Movies</NavLink>
-            <NavLink to="/series" className='nav-link'>Series</NavLink>
-            <NavLink to="/favorites" className='nav-link'>Favorites</NavLink>
-          </nav>
-        </div>
+       
         <MovieCard movies={movies} onMovieClick={setSelectedMovie} />
         <div className="pagination">
           <button className='btn-page' onClick={prevPage} disabled={page === 1}>Prev</button>

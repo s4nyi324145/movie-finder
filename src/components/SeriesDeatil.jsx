@@ -3,6 +3,7 @@ import "../style/seriesdetail.css";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import Comments from "./Comments";
 
 function SeriesDetail({ seriesId, onClose, favorites, setFavorites }) {
   const [seriesDetail, setSeriesDetail] = useState(null);
@@ -185,8 +186,8 @@ function SeriesDetail({ seriesId, onClose, favorites, setFavorites }) {
               ))}
           </div>
           <div className="related-shows">
-            <h2>Reletad Shows</h2>
-            <div className="related-list">
+          <h2>Reletad Shows</h2>
+          <div className="related-list">
               {similarSeries.results?.length > 0 ? (
                 similarSeries.results.slice(0, 5).map(show => (
                   <div key={show.id} className="related-card" onClick={() => {
@@ -201,7 +202,8 @@ function SeriesDetail({ seriesId, onClose, favorites, setFavorites }) {
               ) : (
                 <p>No related shows found.</p>
               )}
-            </div>
+          </div>
+          <Comments id={seriesId}/>
               
           </div>
         </div>

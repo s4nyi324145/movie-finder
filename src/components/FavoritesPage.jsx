@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { FavoritesContext } from '../context/FavoritesContext.jsx';
 import { Link, NavLink } from 'react-router-dom';
+import Hero from './Hero.jsx';
 
 import SeriesCard from './SeriesCard.jsx';
 import MovieCard from './MovieCard.jsx';
@@ -17,17 +18,8 @@ export default function FavoritesPage() {
 
   return (
     <>
+      <Hero/>
        <div className="favorites-container">
-      {/* Navbar */}
-      <div className="navbar">
-                <nav>
-                    <NavLink to="/" className='nav-link'>Movies</NavLink>
-                    <NavLink to="/series" className='nav-link'>Series</NavLink>
-                    <NavLink to="/favorites" className='nav-link'>Favorites</NavLink>
-                </nav>
-      </div>
-
-      {/* Favorite Movies */}
       <section className="favorites-section">
         <h2>Your Favorite Movies</h2>
         <div className="favorites-scroll">
@@ -39,7 +31,7 @@ export default function FavoritesPage() {
         </div>
       </section>
 
-      {/* Favorite Series */}
+
       <section className="favorites-section">
         <h2>Your Favorite Series</h2>
         <div className="favorites-scroll">
@@ -51,7 +43,7 @@ export default function FavoritesPage() {
         </div>
       </section>
 
-      {/* Modals */}
+     
       {selectedMovie && (
         <MovieDetail movie={selectedMovie} favorites={favorites} setFavorites={setFavorites} onClose={() => setSelectedMovie(null)} />
       )}
