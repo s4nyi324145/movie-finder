@@ -27,6 +27,13 @@ export default function MoviesPage() {
       if (page > 1) setPage(p => p - 1);
     }
 
+    useEffect(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [page]);
+
+
+    if (loading) return <p className="loading">Loading...</p>;
+    if (error) return <p className="error">{error}</p>;
 
     return (
       <>

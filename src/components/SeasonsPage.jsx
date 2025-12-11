@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import '../style/seasons.css'
 
 
@@ -9,11 +9,24 @@ import '../style/seasons.css'
 const API_KEY = "e3cf4347e1ac26d5b649a9bc8c8c7a9a";
 const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 
+
+
+
+
 function SeasonsPage() {
   const { id } = useParams();
   const [series, setSeries] = useState(null);
   const [episodes, setEpisodes] = useState([]);
   const [episodeLoading, setEpisodeLoading] = useState(true)
+  const [imdbId, setImdbId] = useState(null)
+
+
+  async function getExternalIds() {
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${id}/external_ids?api_key=${API_KEY}`);
+    if (!response.ok) throw new Error("Failed to fetch external IDs");
+    const data = await response.json();
+    setImdbId(data.imdb_id)
+  }
 
   async function fetchSeries() {
     const res = await fetch(
@@ -48,6 +61,7 @@ function SeasonsPage() {
 
   useEffect(() => {
     fetchSeries();
+    getExternalIds();
   }, [id]);
 
   useEffect(() => {console.log(series)}, [series])
@@ -142,7 +156,7 @@ function SeasonsPage() {
               <div className="episode-list">
                 {season.episodes.map(ep => (
                 
-                    <div key={ep.id}  data-ep-name={`${ep.name}\nSeason: ${ep.season_number}  Episode: ${ep.episode_number}`} className={`episode-card ${ep.vote_average >= 9 ? 'Awesome' : ep.vote_average >= 8 ? 'Great' : ep.vote_average >= 7 ? 'Good' :  ep.vote_average >= 5 ? 'Regular' : ep.vote_average >= 4 ? 'Bad'  : ep.vote_average == 0 ? 'Unknown' : 'Terrible'}`}>
+                    <div key={ep.id}  onClick={() => window.open(`https://www.imdb.com/title/${imdbId}/`, "_blank")}  data-ep-name={`${ep.name}\nSeason: ${ep.season_number}  Episode: ${ep.episode_number}`} className={`episode-card ${ep.vote_average >= 9 ? 'Awesome' : ep.vote_average >= 8 ? 'Great' : ep.vote_average >= 7 ? 'Good' :  ep.vote_average >= 5 ? 'Regular' : ep.vote_average >= 4 ? 'Bad'  : ep.vote_average == 0 ? 'Unknown' : 'Terrible'}`}>
                   
                     <p>{ep.vote_average.toFixed(1) > 0 ? ep.vote_average.toFixed(1) : '?'}</p>
                     

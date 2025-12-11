@@ -1,110 +1,95 @@
-import { useEffect, useState } from "react";
-import "../style/comments.css"
+import { useState } from "react";
+import useComments from "../hooks/useComments";
+import "../style/comments.css";
 
-export default function Comments({id, title}) {
-  const [comments, setComments] = useState([]);
+export default function Comments({ id, title }) {
   const [newComment, setNewComment] = useState("");
   const [adding, setAdding] = useState(false);
-  const [userName, setUserName] = useState(localStorage.getItem("username"));
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editText, setEditText] = useState("");
+  const username = localStorage.getItem("username");
 
+  const { comments, error, loading, addComment, deleteComment, editComment } = useComments(id);
 
-  async function loadComments() {
-        try {
-            
-            const response = await fetch(`http://localhost:5500/comments/${id}`);
-            const data = await response.json();
-            console.log(data)
-            setComments(data)
+  const handleAddClick = () => setAdding(true);
 
-        } catch (error) {
-            alert(error)
-        }
-  }
-
-  const handleAddClick = () => {
-    setAdding(true);
+  const handleSubmit = async () => {
+    const result = await addComment({ comment: newComment, title });
+    if (result.success) {
+      setNewComment("");
+      setAdding(false);
+    } else {
+      console.log(result.message);
+    }
   };
 
-  useEffect(() => {loadComments()},[id])
+  const handleDelete = async (comment_id) => {
+    await deleteComment({ commentId: comment_id });
+  };
 
- const handleSubmit = async () => {
-        if (newComment.trim() === "") return;
-    
-        const token = localStorage.getItem("token");
-    
-        const response = await fetch("http://localhost:5500/comments/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            comment: newComment,
-            movie_id: id,
-            movie_title: title 
-          }),
-        });
-    
-        const data = await response.json();
-        if (response.ok) {
-          setNewComment("");
-          setAdding(false);
-          await loadComments();
-        } else {
-          alert(data.message || "Error adding comment");
-        }
-      };
+  const handleEdit = async (comment_id) => {
+    await editComment({ commentId: comment_id, newComment: editText });
+    setEditingCommentId(null);
+  };
 
-
-    return(<>
-    
+  return (
     <div className="comments">
-  <h2 className="comments-title">Comments</h2>
+      <h2 className="comments-title">Comments</h2>
 
-  <div className="comments-wrapper">
-    {comments.length === 0 && (
-      <p className="no-comments">No comments yet. Be the first!</p>
-    )}
+      {loading && <p className="loading">Loading...</p>}
+      {error && <p className="error">{error}</p>}
 
-    {comments.map((c) => {
-      const date = new Date(c.date).toLocaleDateString("hu-HU");
+      <div className="comments-wrapper">
+        {comments.length === 0 && <p className="no-comments">No comments yet. Be the first!</p>}
 
+        {comments.map((c) => {
+          const date = new Date(c.date).toLocaleDateString("hu-HU");
+          const isEditing = editingCommentId === c.comment_id;
 
-      return (
-        <div key={c.comment_id} className="comment-card">
-          <div className="comment-header">
-          <span className={`comment-user ${c.username === userName ? "my-comment-user" : ""}`}>{c.username}</span>
-            <span className="comment-date">{date}</span>
-          </div>
-          <p className="comment-text">{c.comment}</p>
-        </div>
-      );
-    })}
+          return (
+            <div key={c.comment_id} className="comment-card">
+              <div className="comment-header">
+                <span className={`comment-user ${c.username === username ? "my-comment-user" : ""}`}>
+                  {c.username}
+                </span>
+                <span className="comment-date">{date}</span>
+              </div>
 
-  </div>
-
-  {adding ? (
-    <div className="add-comment-box">
-      <textarea 
-        placeholder="Write your comment..."
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
-      />
-      <div className="buttons">
-        <button className="btn submit-btn" onClick={handleSubmit}>Submit</button>
-        <button className="btn-close-submit" onClick={() => setAdding(false)}>X</button>
+              {isEditing ? (
+                <div className="edit-comment-box">
+                  <textarea value={editText} onChange={(e) => setEditText(e.target.value)} />
+                  <div className="comment-buttons">
+                    <button className="save" onClick={() => handleEdit(editingCommentId)}>Save</button>
+                    <button className="cancel" onClick={() => setEditingCommentId(null)}>Cancel</button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <p className="comment-text">{c.comment}</p>
+                  {c.username === username && (
+                    <div className="comment-buttons">
+                      <button onClick={() => handleDelete(c.comment_id)} className="delete">Delete</button>
+                      <button onClick={() => { setEditingCommentId(c.comment_id); setEditText(c.comment); }} className="edit">Edit</button>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
-    </div>
-  ) : (
-  
-      <button className="btn add-btn" onClick={handleAddClick}>
-      + Add Comment
-      </button>
-      
-  
-  )}
-</div>
 
-    </>)
+      {adding ? (
+        <div className="add-comment-box">
+          <textarea placeholder="Write your comment..." value={newComment} onChange={(e) => setNewComment(e.target.value)} />
+          <div className="buttons">
+            <button className="btn submit-btn" onClick={handleSubmit}>Submit</button>
+            <button className="btn-close-submit" onClick={() => setAdding(false)}>X</button>
+          </div>
+        </div>
+      ) : (
+        <button className="btn add-btn" onClick={handleAddClick}>+ Add Comment</button>
+      )}
+    </div>
+  );
 }

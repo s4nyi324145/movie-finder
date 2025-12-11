@@ -4,39 +4,25 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import Comments from "./Comments";
+import useSeriesDetail from "../hooks/useSeriesDetail";
+import Trailer from "./Trailer";
+import MovieDetailCast from "./MovieDetailCast";
+import RelatedShows from "./Relatedshows";
+
 
 function SeriesDetail({ seriesId, onClose, favorites, setFavorites }) {
-  const [seriesDetail, setSeriesDetail] = useState(null);
-  const [similarSeries, setSimilarSeries] = useState([]);
+
   const [hasLiked, setHasLiked] = useState(false);
   const navigate = useNavigate();
   const API_KEY = "e3cf4347e1ac26d5b649a9bc8c8c7a9a";
   const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
   const BACKDROP_BASE = "https://image.tmdb.org/t/p/original";
 
-  async function fetchSeriesDetails() {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/tv/${seriesId}?api_key=${API_KEY}&append_to_response=videos,credits`
-      );
-      const data = await response.json();
-      setSeriesDetail(data);
-    } catch (err) {
-      console.error("Fetch error:", err);
-    }
-  }
+  const {seriesDetail,similarSeries,error,loading} = useSeriesDetail(seriesId)
 
-   async function fetchSimilarSeries() {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/tv/${seriesId}/recommendations?api_key=${API_KEY}&language=en-US&page=1`
-      );
-      const data = await response.json();
-      setSimilarSeries(data);
-    } catch (err) {
-      console.error("Fetch error:", err);
-    }
-  }
+  useEffect(() => console.log(seriesDetail), [seriesDetail])
+
+
 
   useEffect(() => {
     if (seriesDetail) {
@@ -61,17 +47,27 @@ function SeriesDetail({ seriesId, onClose, favorites, setFavorites }) {
     setHasLiked(prev => !prev);
   }
 
-  useEffect(() => {
-    fetchSeriesDetails();
-    fetchSimilarSeries();
-  }, [seriesId]);
+
 
   useEffect(() => {console.log(similarSeries);}, [similarSeries]);
 
   if (!seriesDetail) return null;
 
+
+  const trailer = seriesDetail?.videos?.results?.find(v => v.type === "Trailer");
+  const cast = seriesDetail?.credits?.cast?.slice(0, 10) || [];
+  const related = similarSeries?.results?.slice(0, 5) || [];
+
   return (
+
+
+
     <div className="detail-overlay">
+
+      {loading && <p className="loading">Loading...</p>}
+      {error && <p className="error">{error}</p>}
+
+
       <div className="detail-content">
         <div
           className="detail-backdrop"
@@ -145,67 +141,10 @@ function SeriesDetail({ seriesId, onClose, favorites, setFavorites }) {
               )}
             </div>
           </div>
-
-  
-          {seriesDetail.videos?.results?.find(v => v.type === "Trailer") ? (
-            <div className="trailer">
-              <h2>Trailer</h2>
-              <iframe
-                width="100%"
-                height="350"
-                src={`https://www.youtube.com/embed/${
-                  seriesDetail.videos.results.find(
-                    v => v.type === "Trailer"
-                  ).key
-                }`}
-                allowFullScreen
-              ></iframe>
-            </div>
-          ) : (
-            <p>Trailer not found</p>
-          )}
-
-   
-          <h2>Cast</h2>
-          <div className="cast-list">
-            {seriesDetail.credits?.cast
-              ?.slice(0, 10)
-              .map(actor => (
-                <div key={actor.id} className="cast-card">
-                  <img
-                    src={
-                      actor.profile_path
-                        ? IMAGE_BASE + actor.profile_path
-                        : "No photo found"
-                    }
-                    alt={actor.name}
-                  />
-                  <p className="actor-name">{actor.name}</p>
-                  <p className="actor-role">{actor.character}</p>
-                </div>
-              ))}
-          </div>
-          <div className="related-shows">
-          <h2>Reletad Shows</h2>
-          <div className="related-list">
-              {similarSeries.results?.length > 0 ? (
-                similarSeries.results.slice(0, 5).map(show => (
-                  <div key={show.id} className="related-card" onClick={() => {
-                    navigate(`/series/${show.id}/seasons`);
-                    onClose();
-                  }}>
-                    <div className="card-img">
-                        <img src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}  alt={show.title} />
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p>No related shows found.</p>
-              )}
-          </div>
-          <Comments id={seriesId}/>
-              
-          </div>
+          <Trailer trailer={trailer}/>
+          <MovieDetailCast cast={cast}/>
+          <RelatedShows related={related} />
+          <Comments id={seriesDetail.id} title={seriesDetail.name}/>
         </div>
       </div>
     </div>

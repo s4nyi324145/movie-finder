@@ -4,14 +4,14 @@ export default function useMovieDetail({movieId}) {
 
     const [movieDetail, setMovieDetail] = useState(null);
     const [movieRecom, setMovieRecom] = useState(null)
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     const API_KEY = "e3cf4347e1ac26d5b649a9bc8c8c7a9a";
 
     async function fetchMovieDetails() {
     try {
-        setLoading(true);
+ 
         const response = await fetch(
         `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos,credits`
         );

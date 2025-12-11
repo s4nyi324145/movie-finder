@@ -5,6 +5,9 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import Comments from "./Comments";
 import useMovieDetail from "../hooks/useMovieDetail";
 import { FavoritesContext } from "../context/FavoritesContext";
+import Trailer from "./Trailer";
+import RelatedShows from "./Relatedshows";
+import MovieDetailCast from "./MovieDetailCast";
 
 const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 const BACKDROP_BASE = "https://image.tmdb.org/t/p/original";
@@ -77,46 +80,9 @@ export default function MovieDetail({ movieId, onClose }) {
             </button>
           </div>
 
-          {trailer ? (
-            <div className="trailer">
-              <h2>Trailer</h2>
-              <iframe
-                width="100%"
-                height="350"
-                src={`https://www.youtube.com/embed/${trailer.key}`}
-                allowFullScreen
-                title="Trailer"
-              ></iframe>
-            </div>
-          ) : (
-            <p>Trailer not found</p>
-          )}
-
-          <h2>Cast</h2>
-          <div className="cast-list">
-            {cast.map(actor => (
-              <div key={actor.id} className="cast-card">
-                <img
-                  src={actor.profile_path ? IMAGE_BASE + actor.profile_path : FALLBACK_PROFILE}
-                  alt={actor.name}
-                />
-                <p className="actor-name">{actor.name}</p>
-                <p className="actor-role">{actor.character}</p>
-              </div>
-            ))}
-          </div>
-
-          <h2>Related Shows</h2>
-          <div className="related-list">
-            {related.length > 0 ? related.map(show => (
-              <div key={show.id} className="related-card">
-                <div className="card-img">
-                  <img src={show.poster_path ? IMAGE_BASE + show.poster_path : FALLBACK_POSTER} alt={show.title} />
-                </div>
-              </div>
-            )) : <p>No related shows found.</p>}
-          </div>
-
+          <Trailer trailer={trailer}/>
+          <MovieDetailCast cast={cast} />
+          <RelatedShows related={related}/>
           <Comments id={movieId} title={movieDetail.title} />
         </div>
       </div>

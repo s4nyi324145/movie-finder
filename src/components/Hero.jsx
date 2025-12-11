@@ -1,35 +1,61 @@
 import '../style/Hero.css';
 import searchImg from '../assets/search.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faStar, faHeart, faFilm, faUser } from '@fortawesome/free-solid-svg-icons';
-import { use, useEffect, useState } from 'react';
+import { faSearch,  faUser } from '@fortawesome/free-solid-svg-icons';
+import {  useEffect, useState } from 'react';
 import { useNavigate, NavLink, } from 'react-router-dom';
+
+function NotLogin({navigate}){
+
+    return(
+        <>
+        <button onClick={() => navigate("/login")} className="login-btn">Login</button>
+        <button onClick={() => navigate("/register")} className="register-btn">Register</button>
+        </>
+    )
+
+}
+
+function UserLoggedIn({username,dropdownOpen,setDropdownOpen,handleLogout,navigate}){
+
+    return(<>
+
+                <div className="user-dropdown">
+                        <button className="user-btn" onClick={() => setDropdownOpen(p => !p)}>
+                            <FontAwesomeIcon icon={faUser} /> {username}
+                        </button>
+                        {dropdownOpen && (
+                            <div className="dropdown-menu">
+                            <button onClick={() => navigate("/profile")}>Profile</button>
+                            <button onClick={handleLogout}>Logout</button>
+                            </div>
+                        )}
+                </div>
+    
+    </>)
+}
+
 
 export default function Hero({searchTerm, setSearchTerm}) {
 
-    const [token,setToken] = useState(null)
-    const [userName,setUserName] = useState("Guest")
     const navigate = useNavigate()
     const [dropdownOpen, setDropdownOpen] = useState(false)
-
-    async function getLocalstorage() {
-        const token = localStorage.getItem("token");
-        const username = localStorage.getItem("username");
+    const [token, setToken] = useState(localStorage.getItem("token") || null);
+    const [username, setUsername] = useState(localStorage.getItem("username") || "");
     
-        setToken(token);
-        setUserName(token ? username : "Guest");
-    }
+
+
+
 
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("username");
-        setToken(null);
-        setUserName("Guest");
+        setToken(null)
+        setUsername("")
         setDropdownOpen(false);
         navigate("/");
     };
 
-    useEffect(() => { getLocalstorage() }, [])
 
     return (
         <div className="hero-wrapper">
@@ -70,24 +96,7 @@ export default function Hero({searchTerm, setSearchTerm}) {
                     </div>
 
                     <div className="auth-section">
-                    {!token ? (
-                        <>
-                        <button onClick={() => navigate("/login")} className="login-btn">Login</button>
-                        <button onClick={() => navigate("/register")} className="register-btn">Register</button>
-                        </>
-                    ) : (
-                        <div className="user-dropdown">
-                        <button className="user-btn" onClick={() => setDropdownOpen(p => !p)}>
-                            <FontAwesomeIcon icon={faUser} /> {userName}
-                        </button>
-                        {dropdownOpen && (
-                            <div className="dropdown-menu">
-                            <button onClick={() => navigate("/profile")}>Profile</button>
-                            <button onClick={handleLogout}>Logout</button>
-                            </div>
-                        )}
-                        </div>
-                    )}
+                    {!token ? <NotLogin navigate={navigate}/> : <UserLoggedIn username={username} dropdownOpen={dropdownOpen} setDropdownOpen={setDropdownOpen} handleLogout={handleLogout} navigate={navigate} />}
                     </div>
                 </nav>
             </div>

@@ -149,3 +149,98 @@
       transform: translateY(0); 
     }
   }
+
+  .edit-comment-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: #1c1c1e;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    border: 1px solid #2a2a2c;
+    box-shadow: 0 0 10px rgb(0 0 0 / 15%);
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .edit-comment-box textarea {
+    min-height: 4rem;
+    border-radius: 0.625rem;
+    background: #1c1c1e;
+    border: 1px solid #2a2a2c;
+    padding: 0.5rem;
+    color: #fff;
+    font-size: 0.95rem;
+    resize: vertical;
+  }
+  
+  .edit-comment-box .comment-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+  
+  .edit-comment-box .save,
+  .edit-comment-box .cancel {
+    padding: 0.5rem 1rem;
+    border-radius: 0.625rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease;
+    font-size: 0.9rem;
+  }
+  
+  .edit-comment-box .save {
+    background: #4da3ff;
+    color: #fff;
+  }
+  
+  .edit-comment-box .save:hover {
+    background: #2a82d8;
+  }
+  
+  .edit-comment-box .cancel {
+    background: #ff4d4d;
+    color: #fff;
+  }
+  
+  .edit-comment-box .cancel:hover {
+    background: #e63b3b;
+  }
+  
+  .comment-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+  }
+  
+  .comment-buttons .edit,
+  .comment-buttons .delete {
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.625rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: 0.2s ease;
+  }
+  
+  .comment-buttons .edit {
+    background: #4da3ff;
+    color: #fff;
+  }
+  
+  .comment-buttons .edit:hover {
+    background: #2a82d8;
+  }
+  
+  .comment-buttons .delete {
+    background: #ff4d4d;
+    color: #fff;
+  }
+  
+  .comment-buttons .delete:hover {
+    background: #e63b3b;
+  }
+  
