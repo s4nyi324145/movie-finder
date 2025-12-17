@@ -1,5 +1,4 @@
 import { useState , useEffect, useContext} from 'react'
-import { FavoritesContext } from "../context/FavoritesContext";
 import Hero from './Hero.jsx'
 import MovieDetail from './MovieDetail.jsx'
 import MovieCard from './MovieCard.jsx'
@@ -13,7 +12,6 @@ export default function MoviesPage() {
    
     const [searchTerm, setSearchTerm] = useState('');
     const [page, setPage] = useState(1);
-    const { favorites, favoritesSeries, setFavorites, setFavoritesSeries } = useContext(FavoritesContext);
     const [selectedMovie, setSelectedMovie] = useState(null)
  
     const { movies, loading, error } = useMovie(searchTerm, page);
@@ -42,13 +40,11 @@ export default function MoviesPage() {
         {loading && <p className='loading'>Loading...</p>}
         {error && <p className='error'>{error}</p>}
        
-        <MovieCard movies={movies} onMovieClick={setSelectedMovie} />
+        <MovieCard movies={movies} mode="browse" onMovieClick={setSelectedMovie} />
         <Pagination page={page} onNext={nextPage} onPrev={prevPage} />
         {selectedMovie && (
           <MovieDetail 
-            movieId={selectedMovie} 
-            favorites={favorites} 
-            setFavorites={setFavorites} 
+            movieId={selectedMovie}  
             onClose={() => setSelectedMovie(null)} 
           />
         )}

@@ -2,7 +2,7 @@ import '../style/Hero.css';
 import searchImg from '../assets/search.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch,  faUser } from '@fortawesome/free-solid-svg-icons';
-import {  useEffect, useState } from 'react';
+import {   useState } from 'react';
 import { useNavigate, NavLink, } from 'react-router-dom';
 
 function NotLogin({navigate}){
@@ -92,7 +92,7 @@ export default function Hero({searchTerm, setSearchTerm}) {
                     <div className="nav-left">
                     <NavLink to="/" className='nav-link'>Movies</NavLink>
                     <NavLink to="/series" className='nav-link'>Series</NavLink>
-                    <NavLink to="/favorites" className='nav-link'>Favorites</NavLink>
+                    <NavLink to="/watchlist" className='nav-link'>Watchlist</NavLink>
                     </div>
 
                     <div className="auth-section">

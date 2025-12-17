@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import Comments from "./Comments";
 import useMovieDetail from "../hooks/useMovieDetail";
-import { FavoritesContext } from "../context/FavoritesContext";
+
 import Trailer from "./Trailer";
 import RelatedShows from "./Relatedshows";
 import MovieDetailCast from "./MovieDetailCast";
@@ -12,32 +12,62 @@ import MovieDetailCast from "./MovieDetailCast";
 const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 const BACKDROP_BASE = "https://image.tmdb.org/t/p/original";
 const FALLBACK_POSTER = "https://via.placeholder.com/500x750?text=No+Image";
-const FALLBACK_PROFILE = "https://via.placeholder.com/150x225?text=No+Photo";
+
 
 export default function MovieDetail({ movieId, onClose }) {
-  const { favorites, setFavorites } = useContext(FavoritesContext);
   const { movieDetail, movieRecom, loading, error } = useMovieDetail({movieId});
-  const [hasLiked, setHasLiked] = useState(false);
+  const [watchlistItem, setWatchListItem] = useState()
+  const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    if (movieDetail) {
-      setHasLiked(favorites.some(f => f.id === movieDetail.id));
-    }
-  }, [favorites, movieDetail]);
+  async function loadWatchlist() {
+      
 
-  const toggleFavorite = () => {
-    if (!movieDetail) return;
-
-    setFavorites(prev => {
-      if (hasLiked) {
-        return prev.filter(m => m.id !== movieDetail.id);
-      } else {
-        return [...prev, movieDetail];
+      const res = await fetch(`http://localhost:5500/watchlist/movie/${movieId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setWatchListItem(data); 
       }
-    });
 
-    setHasLiked(prev => !prev);
-  };
+  }
+
+  async function toggleWatchlist() {
+    if(!watchlistItem){
+        const res = await fetch(`http://localhost:5500/watchlist/movie`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ movie_id: movieId, type: "movie" })
+        });
+        if (res.ok) {
+          setWatchListItem(movieId); 
+        } else {
+          console.error("Failed to add movie to watchlist");
+        }
+    }else {
+      
+      const res = await fetch(`http://localhost:5500/watchlist/movie/${movieId}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+  
+      if (res.ok) setWatchListItem(null);
+    }
+  }
+  useEffect(() => {loadWatchlist()}, [movieId])
+  useEffect(() => {console.log(watchlistItem)}, [watchlistItem])
+  
+  
+  
+
+  
 
   if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -54,7 +84,7 @@ export default function MovieDetail({ movieId, onClose }) {
           className="detail-backdrop"
           style={{ backgroundImage: `url(${BACKDROP_BASE + movieDetail.backdrop_path})` }}
         />
-
+       
         <button className="detail-close" onClick={onClose}>×</button>
 
         <div className="detail-info">
@@ -66,7 +96,6 @@ export default function MovieDetail({ movieId, onClose }) {
 
           <h1>{movieDetail.title}</h1>
           {movieDetail.tagline && <h3 className="tagline">"{movieDetail.tagline}"</h3>}
-
           <p><strong>Genres:</strong> {movieDetail.genres.map(g => g.name).join(", ")}</p>
           <p><strong>Runtime:</strong> {movieDetail.runtime} min</p>
           <p><strong>Release date:</strong> {movieDetail.release_date}</p>
@@ -75,8 +104,8 @@ export default function MovieDetail({ movieId, onClose }) {
           <p className="overview">{movieDetail.overview}</p>
 
           <div className="addFavorite">
-            <button className={hasLiked ? "btn btn-white" : "btn"} onClick={toggleFavorite}>
-              {hasLiked ? "Remove from Favorites" : "+ Add to Favorites"}
+            <button className={watchlistItem ? "btn btn-white" : "btn" } onClick={toggleWatchlist}>
+              {watchlistItem ? "Remove from Watchlist" : "+ Add to Watchlist"}
             </button>
           </div>
 

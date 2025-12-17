@@ -1,0 +1,90 @@
+.watchlist-card {
+    width: 150px; 
+    margin: 8px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .poster-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 150%; 
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  
+  .poster-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+  }
+  
+  .poster-wrapper:hover img {
+    transform: scale(1.05);
+  }
+  
+  .remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    color: #e74c3c;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .remove-btn:hover {
+    background: #e74c3c;
+    color: white;
+  }
+  
+  .watchlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .icons{
+    position: absolute;
+    top: 7px;
+    
+    left: 5px;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    border-radius: 50%;
+    color: #e74c3c;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  
+
+  
+  .status-badge.planned {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .status-badge.completed {
+    background-color: #2ecc71;
+    color: white;
+  }
+  
+  .status-badge.watching {
+    background-color: #e67e22;
+    color: white;
+  }
+
+
+  

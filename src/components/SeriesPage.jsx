@@ -1,11 +1,9 @@
 import Hero from './Hero.jsx'
 import SeriesDeatil from './SeriesDeatil.jsx'
 import SeriesCard from './SeriesCard.jsx'
-import { useState,useEffect, useContext } from 'react'
-import { FavoritesContext } from "../context/FavoritesContext";
+import { useState,useEffect } from 'react'
 import useSeries from '../hooks/useSeries.js';
 import Pagination from './Pagination.jsx'
-import { Link, NavLink } from 'react-router-dom'
 
 
 export default function SeriesPage() {
@@ -13,7 +11,6 @@ export default function SeriesPage() {
  
  const [searchTerm, setSearchTerm] = useState('')
  const [selectedSeries, setSelectedSeries] = useState(null)
- const { favorites, favoritesSeries, setFavorites, setFavoritesSeries } = useContext(FavoritesContext);
  const [page, setPage] = useState(1);
   
   const {series,loading,error} = useSeries(searchTerm,page)
@@ -41,7 +38,7 @@ export default function SeriesPage() {
             <SeriesCard series={series} onMovieClick={setSelectedSeries}/>
             <Pagination page={page} onNext={nextPage} onPrev={prevPage} />
             {selectedSeries && 
-                    <SeriesDeatil seriesId={selectedSeries} onClose={() => setSelectedSeries(null)} favorites={favoritesSeries} setFavorites={setFavoritesSeries}/>
+                    <SeriesDeatil seriesId={selectedSeries} onClose={() => setSelectedSeries(null)}/>
 
 
             }

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useComments from "../hooks/useComments";
 import "../style/comments.css";
 
@@ -9,7 +11,8 @@ export default function Comments({ id, title }) {
   const [editText, setEditText] = useState("");
   const username = localStorage.getItem("username");
 
-  const { comments, error, loading, addComment, deleteComment, editComment } = useComments(id);
+
+  const { comments, error, loading, addComment, deleteComment, editComment} = useComments(id);
 
   const handleAddClick = () => setAdding(true);
 
@@ -31,6 +34,11 @@ export default function Comments({ id, title }) {
     await editComment({ commentId: comment_id, newComment: editText });
     setEditingCommentId(null);
   };
+
+
+
+
+
 
   return (
     <div className="comments">
@@ -67,10 +75,14 @@ export default function Comments({ id, title }) {
                 <>
                   <p className="comment-text">{c.comment}</p>
                   {c.username === username && (
-                    <div className="comment-buttons">
-                      <button onClick={() => handleDelete(c.comment_id)} className="delete">Delete</button>
-                      <button onClick={() => { setEditingCommentId(c.comment_id); setEditText(c.comment); }} className="edit">Edit</button>
-                    </div>
+                    <>
+                      <div className="comment-buttons">
+                      <button onClick={() => handleDelete(c.comment_id)} className="delete"><FontAwesomeIcon icon={faTrash} /></button>
+                      <button onClick={() => { setEditingCommentId(c.comment_id); setEditText(c.comment); }} className="edit"><FontAwesomeIcon icon={faPen}/></button>
+                      </div>
+                   
+                    
+                    </>
                   )}
                 </>
               )}

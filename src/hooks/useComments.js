@@ -7,7 +7,7 @@ export default function useComments(id) {
     const [error, setError] = useState();
     const token = localStorage.getItem("token");
 
-    async function loadComments() {
+  async function loadComments() {
 
        
         try {
@@ -92,8 +92,52 @@ export default function useComments(id) {
       }
   }
 
+  async function likeComment(commentId){
+    try {
+      const response = await fetch(`http://localhost:5500/comments/commentlike`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ comment_id: commentId }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Error liking comment");
+      setComments(prev =>
+        prev.map(c => (c.comment_id === commentId ? { ...c, comment_like: c.comment_like + 1 } : c))
+      );
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: err.message };
+    }
+
+  }
+
+  async function dislikeComment({commentId}){
+    try {
+      const response = await fetch(`http://localhost:5500/comments/commentdislike`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ comment_id: commentId }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Error disliking comment");
+      setComments(prev =>
+        prev.map(c => (c.comment_id === commentId ? { ...c, comment_dislike: c.comment_dislike + 1 } : c))
+      );
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: err.message };
+    }
+
+  }
+
    useEffect(() => {loadComments()}, [id])
 
-   return{comments,error,loading, addComment, editComment, deleteComment}
+   return{comments,error,loading, addComment, editComment, deleteComment, likeComment,dislikeComment }
 
 }

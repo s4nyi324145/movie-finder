@@ -11,8 +11,6 @@ export default function SeriesCard({ series, onMovieClick }) {
 
     return (
 
-   
-
       <>
         {series.length > 0 ? <div className="movie-cards">
         {series.map(s => 

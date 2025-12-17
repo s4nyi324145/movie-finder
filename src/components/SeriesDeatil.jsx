@@ -10,42 +10,65 @@ import MovieDetailCast from "./MovieDetailCast";
 import RelatedShows from "./Relatedshows";
 
 
-function SeriesDetail({ seriesId, onClose, favorites, setFavorites }) {
+function SeriesDetail({ seriesId, onClose }) {
 
-  const [hasLiked, setHasLiked] = useState(false);
+  const [watchlistItem, setWatchListItem] = useState(false);
   const navigate = useNavigate();
   const API_KEY = "e3cf4347e1ac26d5b649a9bc8c8c7a9a";
   const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
   const BACKDROP_BASE = "https://image.tmdb.org/t/p/original";
+  const token = localStorage.getItem("token")
 
   const {seriesDetail,similarSeries,error,loading} = useSeriesDetail(seriesId)
 
-  useEffect(() => console.log(seriesDetail), [seriesDetail])
 
+  async function loadWatchlist() {
+      
 
-
-  useEffect(() => {
-    if (seriesDetail) {
-      setHasLiked(favorites.some(f => f.id === seriesDetail.id));
-    }
-  }, [favorites, seriesDetail]);
-
-  function handleClick() {
-    if (!seriesDetail) return;
-
-    setFavorites(prev => {
-      if (hasLiked) {
-        return prev.filter(item => item.id !== seriesDetail.id);
-      } else {
-        if (!prev.some(item => item.id === seriesDetail.id)) {
-          return [...prev, seriesDetail];
+    const res = await fetch(`http://localhost:5500/watchlist/movie/${seriesId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-        return prev;
       }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      setWatchListItem(data); 
+    }
+
+}
+
+  async function toggleWatchlist() {
+  if(!watchlistItem){
+      const res = await fetch(`http://localhost:5500/watchlist/movie`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ movie_id: seriesId, type: "series" })
+      });
+      if (res.ok) {
+        setWatchListItem(seriesId); 
+      } else {
+        console.error("Failed to add movie to watchlist");
+      }
+  }else {
+    
+    const res = await fetch(`http://localhost:5500/watchlist/movie/${seriesId}`, {
+      method: "DELETE",
+      headers: { "Authorization": `Bearer ${token}` }
     });
 
-    setHasLiked(prev => !prev);
+    if (res.ok) setWatchListItem(null);
   }
+}
+useEffect(() => {loadWatchlist()}, [seriesId])
+useEffect(() => {console.log(watchlistItem)}, [watchlistItem])
+
+  useEffect(() => console.log(seriesDetail), [seriesDetail])
+
 
 
 
@@ -130,13 +153,13 @@ function SeriesDetail({ seriesId, onClose, favorites, setFavorites }) {
                 <button className="btn" onClick={() => navigate(`/series/${seriesId}/seasons`)}>Seasons details</button>
             </div>
             <div className="addFavorite">
-              {hasLiked ? (
-                <button className="btn btn-white" onClick={handleClick}>
-                  Remove from your Favorites
+              {watchlistItem ? (
+                <button className="btn btn-white" onClick={toggleWatchlist}>
+                  Remove from your Watchlist
                 </button>
               ) : (
-                <button className="btn" onClick={handleClick}>
-                  + Add to your Favorites
+                <button className="btn" onClick={toggleWatchlist}>
+                  + Add to your Watchlist
                 </button>
               )}
             </div>
