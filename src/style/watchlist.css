@@ -1,90 +1,132 @@
 .watchlist-card {
-    width: 150px; 
-    margin: 8px;
-    cursor: pointer;
-    position: relative;
-  }
-  
-  .poster-wrapper {
-    position: relative;
-    width: 100%;
-    padding-top: 150%; 
-    overflow: hidden;
-    border-radius: 8px;
-  }
-  
-  .poster-wrapper img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.2s ease;
-  }
-  
-  .poster-wrapper:hover img {
-    transform: scale(1.05);
-  }
-  
-  .remove-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: rgba(0,0,0,0.6);
-    border: none;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    color: #e74c3c;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .remove-btn:hover {
-    background: #e74c3c;
-    color: white;
-  }
-  
-  .watchlist-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 150px);
-    gap: 12px;
-    justify-content: center;
-  }
+  width: 150px;
+  margin: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-  .icons{
-    position: absolute;
-    top: 7px;
-    
-    left: 5px;
-    background: rgba(0,0,0,0.6);
-    border: none;
-    border-radius: 50%;
-    color: #e74c3c;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
+.watchlist-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
 
-  
-
-  
-  .status-badge.planned {
-    background-color: #3498db;
-    color: white;
-  }
-  
-  .status-badge.completed {
-    background-color: #2ecc71;
-    color: white;
-  }
-  
-  .status-badge.watching {
-    background-color: #e67e22;
-    color: white;
-  }
+.watchlist-card img {
+  width: 100%;
+  height: 225px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
 
 
-  
+.poster-wrapper:hover img {
+  transform: scale(1.05);
+}
+
+.watchlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 150px);
+  gap: 0.8rem;
+  justify-content: center;
+}
+
+
+.icons {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.watchlist-card:hover .icons {
+  opacity: 1;
+  pointer-events: auto
+}
+
+
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.status-badge:hover {
+  transform: scale(1.1);
+}
+
+
+.status-badge.planned {
+  background-color: #3498db;
+  color: white;
+}
+
+.status-badge.completed {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.status-badge.watching {
+  background-color: #e67e22;
+  color: white;
+}
+
+
+.remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: #e74c3c;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+.watchlist-card:hover .remove-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.remove-btn:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+#selectStatus {
+  appearance: none;
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 4px 15px 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+#selectStatus:hover {
+  border-color: #888;
+}

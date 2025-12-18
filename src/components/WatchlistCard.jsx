@@ -41,8 +41,8 @@ export default function WatchlistCard({ movie, onRemove,movieStatus }) {
 
   return (
     <>
-        <div className="watchlist-card">
-  <div className="poster-wrapper">
+  <div className="watchlist-card">
+
     <img src={poster} alt={movie.title} />
 
     <div className="icons">
@@ -59,28 +59,20 @@ export default function WatchlistCard({ movie, onRemove,movieStatus }) {
         </span>)
            
          }
-        
-      
-    </div>
-
-
-    {onRemove && (
-      <button
-        className="remove-btn"
-        onClick={(e) => {
-          e.stopPropagation();
-          onRemove(movie.id);
-        }}
-      >
-        <FontAwesomeIcon icon={faHeart} />
-      </button>
-    )}
-
-
-    
-
-
   </div>
+     
+  {onRemove && (
+        <button
+          className="remove-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove(movie.id);
+          }}
+        >
+          <FontAwesomeIcon icon={faHeart} />
+        </button>
+      )}
+
 </div>
 
     

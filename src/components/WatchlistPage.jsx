@@ -13,7 +13,7 @@ export default function WatchlistPage() {
   const [loading, setLoading] = useState(true);
 
 
-  async function fetchMovieIds() {
+async function fetchMovieIds() {
     try {
       const res = await fetch("http://localhost:5500/watchlist/movie", {
         headers: { Authorization: `Bearer ${token}` }
